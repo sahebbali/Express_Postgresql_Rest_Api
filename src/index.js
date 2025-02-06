@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import pool from "./config/db.js";
 
 import userRoutes from "./routes/userRoutes.js";
+import employeeRoutes from "./routes/employeeRoutes.js";
 import errorHandling from "./middlewares/errorHandler.js";
 import createUserTable from "./data/createUserTable.js";
 import createEmployeeTable from "./data/employeeTable.js";
@@ -19,6 +20,7 @@ app.use(cors());
 
 // Routes
 app.use("/api", userRoutes);
+app.use("/api/employee", employeeRoutes);
 
 // Error handling middleware
 app.use(errorHandling);

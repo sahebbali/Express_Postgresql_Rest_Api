@@ -26,6 +26,7 @@ export const createEmployeeService = async (
   salary,
   manager_id = null
 ) => {
+  console.log("hello employee");
   try {
     const query = `
       INSERT INTO employees (first_name, last_name, email, phone_number, hire_date, job_title, department, salary, manager_id)

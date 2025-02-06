@@ -7,6 +7,7 @@ import {
   updateUser,
 } from "../controllers/userController.js";
 import validateUser from "../middlewares/inputValidator.js";
+import { createEmployeeService } from "../controllers/employeeController.js";
 
 const router = express.Router();
 
@@ -15,5 +16,6 @@ router.get("/user", getAllUsers);
 router.get("/user/:id", getUserById);
 router.put("/user/:id", validateUser, updateUser);
 router.delete("/user/:id", deleteUser);
+router.post("/employee", createEmployeeService);
 
 export default router;
