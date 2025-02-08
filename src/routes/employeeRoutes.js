@@ -98,4 +98,70 @@ router.get("/employee/:id?", async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 });
+
+router.put("/employee/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      first_name,
+      last_name,
+      email,
+      phone_number,
+      hire_date,
+      job_title,
+      department,
+      salary,
+      manager_id,
+    } = req.body;
+
+    // Check if the employee exists
+    const checkQuery = `SELECT * FROM employees WHERE id = $1`;
+    const checkResult = await pool.query(checkQuery, [id]);
+
+    if (checkResult.rows.length === 0) {
+      return res.status(404).json({ success: false, message: "Employee not found" });
+    }
+
+    // Update Query
+    const updateQuery = `
+      UPDATE employees
+      SET
+        first_name = $1,
+        last_name = $2,
+        email = $3,
+        phone_number = $4,
+        hire_date = $5,
+        job_title = $6,
+        department = $7,
+        salary = $8,
+        manager_id = $9
+      WHERE employee_id = $10
+      RETURNING *;
+    `;
+
+    const values = [
+      first_name,
+      last_name,
+      email,
+      phone_number,
+      hire_date,
+      job_title,
+      department,
+      salary,
+      manager_id || null,
+      id,
+    ];
+
+    const result = await pool.query(updateQuery, values);
+
+    res.status(200).json({
+      success: true,
+      message: "Employee updated successfully",
+      data: result.rows[0],
+    });
+  } catch (err) {
+    console.error("Error in PUT /employee:", err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
 export default router;
