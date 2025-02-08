@@ -49,6 +49,7 @@ export const createEmployeeService = async (
     return result.rows[0]; // Return the newly created employee
   } catch (err) {
     console.error("Error in createEmployeeService:", err);
+    next(err);
     throw err; // Re-throw the error for the controller to handle
   }
 };
@@ -92,3 +93,4 @@ export const deleteUser = async (req, res, next) => {
     next(err);
   }
 };
+

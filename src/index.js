@@ -20,7 +20,7 @@ app.use(cors());
 
 // Routes
 app.use("/api", userRoutes);
-app.use("/api/employee", employeeRoutes);
+app.use("/api/emp", employeeRoutes);
 
 // Error handling middleware
 app.use(errorHandling);
