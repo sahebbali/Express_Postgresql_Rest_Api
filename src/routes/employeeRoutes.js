@@ -164,4 +164,31 @@ router.put("/employee/:id", async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 });
+
+router.delete("/employee/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Check if the employee exists
+    const checkQuery = `SELECT * FROM employees WHERE id = $1`;
+    const checkResult = await pool.query(checkQuery, [id]);
+
+    if (checkResult.rows.length === 0) {
+      return res.status(404).json({ success: false, message: "Employee not found" });
+    }
+
+    // Delete Query
+    const deleteQuery = `DELETE FROM employees WHERE id = $1 RETURNING *`;
+    const result = await pool.query(deleteQuery, [id]);
+
+    res.status(200).json({
+      success: true,
+      message: "Employee deleted successfully",
+      data: result.rows[0],
+    });
+  } catch (err) {
+    console.error("Error in DELETE /employee:", err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
 export default router;
