@@ -212,4 +212,29 @@ router.get("/employees/high-salary", async (req, res) => {
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 });
+
+router.get("/employees/salary-rank", async (req, res) => {
+  try {
+    const query = `
+      SELECT 
+        department, 
+        first_name, 
+        last_name, 
+        salary, 
+        RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS salary_rank
+      FROM employees
+    `;
+
+    const result = await pool.query(query);
+
+    res.status(200).json({
+      success: true,
+      message: "Employee salary ranking by department",
+      data: result.rows,
+    });
+  } catch (err) {
+    console.error("Error in GET /employees/salary-rank:", err);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+});
 export default router;
