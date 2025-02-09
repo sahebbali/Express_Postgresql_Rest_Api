@@ -191,4 +191,25 @@ router.delete("/employee/:id", async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 });
+
+router.get("/employees/high-salary", async (req, res) => {
+  try {
+    const query = `
+      SELECT first_name, last_name, salary 
+      FROM employees 
+      WHERE salary > (SELECT AVG(salary) FROM employees)
+    `;
+
+    const result = await pool.query(query);
+
+    res.status(200).json({
+      success: true,
+      message: "Employees earning above average salary",
+      data: result.rows,
+    });
+  } catch (err) {
+    console.error("Error in GET /employees/high-salary:", err);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+});
 export default router;
