@@ -237,4 +237,30 @@ router.get("/employees/salary-rank", async (req, res) => {
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 });
+
+router.get("/employees/above-average", async (req, res) => {
+  try {
+    // Query to get employees earning more than the average salary
+    const query = `
+      SELECT name FROM employees
+      WHERE salary > (SELECT AVG(salary) FROM employees)
+    `;
+
+    const result = await pool.query(query);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, message: "No employees found above average salary" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Employees earning above average salary retrieved successfully",
+      data: result.rows,
+    });
+  } catch (err) {
+    console.error("Error in GET /employees/above-average:", err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 export default router;
