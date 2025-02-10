@@ -8,6 +8,7 @@ import employeeRoutes from "./routes/employeeRoutes.js";
 import errorHandling from "./middlewares/errorHandler.js";
 import createUserTable from "./data/createUserTable.js";
 import createEmployeeTable from "./data/employeeTable.js";
+import createDepartmentTable from "./data/departmentTable.js";
 
 dotenv.config();
 
@@ -29,7 +30,8 @@ app.use(errorHandling);
 createUserTable();
 //Create table before starting server
 createEmployeeTable();
-
+// create department table starting server
+createDepartmentTable()
 // Testing POSTGRES Connection
 app.get("/", async (req, res) => {
   console.log("Start");

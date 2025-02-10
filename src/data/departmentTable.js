@@ -1,6 +1,6 @@
 import pool from "../config/db.js";
 
-const createEmployeeTable = async () => {
+const createDepartmentTable = async () => {
   const queryText = `
    CREATE TABLE IF NOT EXISTS department (
     id SERIAL PRIMARY KEY, -- Auto-incrementing primary key
@@ -19,10 +19,10 @@ const createEmployeeTable = async () => {
 
   try {
     pool.query(queryText);
-    console.log("Employee table created if not exists");
+    console.log("Department table created if not exists");
   } catch (error) {
     console.log("Error creating users table : ", error);
   }
 };
 
-export default createEmployeeTable;
+export default createDepartmentTable;
